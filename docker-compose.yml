@@ -1,0 +1,36 @@
+version: "2"
+services:
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: always
+    ports:
+      - 3002:3000
+    networks:
+      - monitoring
+    volumes:
+      - grafana-volume:/var/lib/grafana
+  influxdb:
+    image: influxdb
+    container_name: influxdb
+    restart: always
+    ports:
+      - 8086:8086
+    environment: 
+      - INFLUXDB_DB=myk6db
+      - INFLUXDB_ADMIN_ENABLED=true
+      - INFLUXDB_ADMIN_USER=admin
+      - INFLUXDB_ADMIN_PASSWORD=pass
+      - INFLUXDB_USER=myk6db
+      - INFLUXDB_USER_PASSWORD=pass
+    networks:
+      - monitoring
+    volumes:
+      - influxdb-volume:/var/lib/influxdb
+networks:
+  monitoring:
+volumes:
+  grafana-volume:
+    external: false
+  influxdb-volume:
+    external: false
